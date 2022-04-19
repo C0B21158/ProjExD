@@ -20,5 +20,6 @@ if __name__ == "__main__":
         "カツオの妹の名前は？":["ワカメ","わかめ"],
         "タラオはカツオから見てどんな関係？":["おい","甥","甥っ子","おいっこ"]
     }
-a_list = shutudai()
-kaito = a_list
+    a_list = shutudai()
+    kaitou(a_list)
+
