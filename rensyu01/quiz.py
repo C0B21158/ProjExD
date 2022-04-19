@@ -10,7 +10,7 @@ def kaitou(a_list):
     kai = input("答えを入力してください：")
     print("入力をした答えは：",kai)
     if kai in a_list:
-        print("正解")
+        print("正解だお")
     else:
         print("不正解です")
 
