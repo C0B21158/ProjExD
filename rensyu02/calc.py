@@ -1,7 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox as tkm
 
-jj = 0
 def button_click(event):
     button=event.widget
     num = button["text"]
