@@ -12,6 +12,8 @@ if __name__ == "__main__":
         button.grid(row = r, column= c, padx = 10, pady = 10)
         if (i+1)%3 == 0:
             r += 1
-            c = 0
+            c = 1
         c +=1
+
+
     root.mainloop()
