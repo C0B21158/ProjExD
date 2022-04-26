@@ -14,10 +14,4 @@ if __name__ == "__main__":
             r += 1
             c = 0
         c +=1
-        
-
-        button.pack()
-    
-    
-    
     root.mainloop()
