@@ -3,7 +3,7 @@ import tkinter as tk
 import tkinter.messagebox as tkm
 
 if __name__ == "__main__":
-    r,c = 0,0
+    r,c = 0,1
     root = tk.Tk()
     root.title("tk")
     root.geometry("300x450")
