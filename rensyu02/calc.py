@@ -1,12 +1,11 @@
-from ast import Num
-from itertools import tee
-from subprocess import TimeoutExpired
+
 import tkinter as tk
 import tkinter.messagebox as tkm
 def button_click(event):
     btn=event.widget
     txt = btn["text"]
-    tkm.showinfo(txt, f"{num}のボタンがクリックされました。")
+    tkm.showinfo(txt, f"{num}のボタンがクリックされました")
+
 if __name__ == "__main__":
     r,c = 0,1
     root = tk.Tk()
