@@ -13,6 +13,7 @@ if __name__ == "__main__":
     root.geometry("300x450")
     for i, num in enumerate(range(9,-1,-1), 1):
         button = tk.Button(root, text=num, font=("Times New Roman",30))
+        btn.bind("<1>", button_click)
         button.grid(row = r, column= c, padx = 10, pady = 10)
         if (i)%3 == 0:
             r += 1
