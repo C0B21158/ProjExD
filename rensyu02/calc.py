@@ -17,7 +17,7 @@ if __name__ == "__main__":
                      width = 10,
                      font=("Times New Roman",40)
                      )
-    entry.grid(row=0, column=0, clumnspan=0)
+    entry.grid(row=0, column=0, clumnspan=4)
 
     for i, num in enumerate(range(9,-1,-1), 1):
         button = tk.Button(root, text=num, font=("Times New Roman",30))
