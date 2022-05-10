@@ -42,8 +42,6 @@ if __name__ == "__main__":
 
     canvas = tk.Canvas(root,width = "1500", height = "900" ,bg = "black")
     canvas.pack()
-    
-
 
     key = ""
     root.bind("<KeyPress>", key_down)
