@@ -72,9 +72,9 @@ def main():
         screen.blit(HARD_txt,(1300,100))
 
         key_inc = pg.key.get_pressed()
-        if key_inc[pg.K_i]:
-            vx += 0.55
-            vy += 0.55
+        if key_inc[pg.K_i]:    #早くなる
+            vx *= 1.15
+            vy *= 1.15
 
 
         #練習８
@@ -93,7 +93,7 @@ def check_bound(sc_r, obj_r):
 
 
 
-def Game_Over():
+def Game_Over():    #GameOver画面
     while True:
         pg.display.set_caption("Game_Over")
         go_screen = pg.display.set_mode((1600,900)) 
