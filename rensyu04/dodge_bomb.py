@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
-
+import random 
+#練習４
 key_delta = {pg.K_UP     : [0 , -1],
              pg.K_DOWN   : [0 , +1],
              pg.K_LEFT   : [-1,  0],
@@ -24,6 +25,13 @@ def main():
     tori_rect.center = 900,400
     screen.blit(tori_img,tori_rect)
 
+    #練習５
+    bomb = pg.Surface((20,20))     #爆弾用Surface 
+    pg.draw.circle(bomb, (255,0, 0), (10,10),10)
+    bomb_rect = bomb.get_rect()
+    bomb_rect.centerx = random.randint(0,sc_rect.width)
+    bomb_rect_centery = random.randint(0,sc_rect.height)
+    screen.blit(bomb, bomb_rect)    #爆弾用のSurfaceを画面用に貼り付け
 
     while True:
         #練習２
