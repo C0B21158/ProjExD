@@ -8,7 +8,9 @@ key_delta = {pg.K_UP     : [0 , -1],
              pg.K_RIGHT  : [+1,  0]
              }
 
+sc = 0
 def main():
+    global sc
     clock = pg.time.Clock()
 
     pg.display.set_caption("逃げろ！工科豚")  #タイトルバーに「初めての…」を表示する
@@ -60,9 +62,25 @@ def main():
         vx *= ret[0] #横方向に画面外なら、符号転換
         vy *= ret[1] #縦方向
 
-        #練習８
-        if tori_rect.colliderect(bomb_rect): return
+        sc += 1
+        fonto = pg.font.Font(None, 80)
+        txt = fonto.render(str(sc), True, "BLACK")
+        screen.blit(txt,(1400,30))
 
+        HARD_fonto = pg.font.Font(None, 50)
+        HARD_txt = HARD_fonto.render("HARDmode: i", True, "BLACK")
+        screen.blit(HARD_txt,(1300,100))
+
+        key_inc = pg.key.get_pressed()
+        if key_inc[pg.K_i]:
+            vx += 0.55
+            vy += 0.55
+
+
+        #練習８
+        if tori_rect.colliderect(bomb_rect):
+            Game_Over()
+            return
 
         pg.display.update()
         clock.tick(1000)
@@ -73,6 +91,31 @@ def check_bound(sc_r, obj_r):
     if obj_r.top < sc_r.top or sc_r.bottom < obj_r.bottom: y = -1
     return x , y
 
+
+
+def Game_Over():
+    while True:
+        pg.display.set_caption("Game_Over")
+        go_screen = pg.display.set_mode((1600,900)) 
+        
+        GameOV1 = pg.font.Font(None, 80)
+        GameOV2 = pg.font.Font(None, 80)
+        GameOV3 = pg.font.Font(None, 80)
+        
+        SCORE_OV = "SCORE:" + str(sc)
+        GOtxt1 = GameOV1.render("Game_Over", True, "RED")
+        GOtxt2 = GameOV2.render(SCORE_OV, True, "WHITE")
+        GOtxt3 = GameOV3.render("FINISH: Q", True, "WHITE")
+
+        go_screen.blit(GOtxt1,(600,400))
+        go_screen.blit(GOtxt2,(600,500))
+        go_screen.blit(GOtxt3,(600,600))
+
+        pg.display.update()
+
+        key_fi = pg.key.get_pressed()
+        if key_fi[pg.K_q]:
+            break
 
 if __name__ == "__main__":
     pg.init()       #モジュールを初期化する
