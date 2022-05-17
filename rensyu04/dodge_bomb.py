@@ -46,6 +46,9 @@ def main():
             if key_states[key] == True:
                 tori_rect.centerx += delta[0]
                 tori_rect.centery += delta[1]
+                if check_bound(sc_rect, tori_rect) !=(1,1):
+                    tori_rect.centerx -= delta[0]
+                    tori_rect.centery -= delta[1]
         screen.blit(tori_img, tori_rect)
 
         #練習６
@@ -56,6 +59,9 @@ def main():
         #練習７
         vx *= ret[0] #横方向に画面外なら、符号転換
         vy *= ret[1] #縦方向
+
+        #練習８
+        if tori_rect.colliderect(bomb_rect): return
 
 
         pg.display.update()
