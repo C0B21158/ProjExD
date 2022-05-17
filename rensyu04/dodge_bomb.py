@@ -24,6 +24,7 @@ def main():
     tori_rect = tori_img.get_rect()
     tori_rect.center = 900,400
     screen.blit(tori_img,tori_rect)
+    vx, vy = +1, +1
 
     #練習５
     bomb = pg.Surface((20,20))     #爆弾用Surface 
@@ -48,13 +49,23 @@ def main():
         screen.blit(tori_img, tori_rect)
 
         #練習６
-        vx, vy = +1, +1
+        
         bomb_rect.move_ip(vx,vy)
         screen.blit(bomb,bomb_rect)
+        ret = check_bound(sc_rect,bomb_rect)
+        #練習７
+        vx *= ret[0] #横方向に画面外なら、符号転換
+        vy *= ret[1] #縦方向
+
 
         pg.display.update()
         clock.tick(1000)
 
+def check_bound(sc_r, obj_r):
+    x ,y = +1, +1
+    if obj_r.left < sc_r.left or sc_r.right < obj_r.right: x = -1#画面外
+    if obj_r.top < sc_r.top or sc_r.bottom < obj_r.bottom: y = -1
+    return x , y
 
 
 if __name__ == "__main__":
