@@ -19,7 +19,6 @@ def main():
     bg_img =pg.image.load("c:/Users/admin/Documents/二年生　前期/プロジェクト/ProjExD2022/ProjExD_pub/fig/pg_bg.jpg")
     bg_rect = bg_img.get_rect()
     screen.blit(bg_img, bg_rect)
-
     #練習３
     tori_img = pg.image.load("c:/Users/admin/Documents/二年生　前期/プロジェクト/ProjExD2022/ProjExD_pub/fig/6.png")
     tori_img = pg.transform.rotozoom(tori_img,0,2.0)
