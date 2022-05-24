@@ -1,7 +1,22 @@
+
 import pygame as pg
 import sys
 import random
 
+score = 0
+
+class Score:
+    def __init__(self, ft,size, sc, co):        
+        self.score = sc
+        self.color = co                                 #生き延びていた時間を加算
+        self.fonto = pg.font.Font(ft, size)                           #Scoreの時間を表示
+        self.txt = "SCORE" + str(self.score)
+        self.text = self.fonto.render(self.txt, True, self.color)
+
+    def update(self):
+        self.score += 1
+        self.txt = "SCORE" + str(self.score)
+        self.text = self.fonto.render(self.txt, True, self.color)
 
 class Screen:
     def __init__(self,fn, wh, title):
@@ -10,11 +25,11 @@ class Screen:
         self.width, self.height = wh #(1600,900)
         self.disp= pg.display.set_mode((self.width,self.height)) #Sureface
         self.rect= self.disp.get_rect()  #Rect
-        self.img = pg.image.load(fn)  # Sureface
+        self.image = pg.image.load(fn)  # Sureface
         #self.rect = self.img.get_rect()
 
 
-class Bird:
+class Bird(pg.sprite.Sprite):
     key_delta = {pg.K_UP   : [0, -1],
              pg.K_DOWN : [0, +1],
              pg.K_LEFT : [-1, 0],
@@ -23,9 +38,9 @@ class Bird:
 
     def __init__(self, fn, r, xy ):
         super().__init__()
-        self.img =pg.image.load(fn)
-        self.img = pg.transform.rotozoom(self.img, 0, r)
-        self.rect= self.img.get_rect()
+        self.image =pg.image.load(fn)
+        self.image = pg.transform.rotozoom(self.image, 0, r)
+        self.rect= self.image.get_rect()
         self.rect.center = xy   
        
 
@@ -41,17 +56,17 @@ class Bird:
                     self.rect.centery -= delta[1]        
 
 
-class Bomb:
-    def __init__(self,cl,hf,sp,screen):
+class Bomb(pg.sprite.Sprite):
+    def __init__(self,cl,r,sp,screen):
         #cl:爆弾円の色
         # hf：爆弾円の半径
         # sp：爆弾円の速度のタプル
         # screen：爆弾円のSureface
         super().__init__()
-        self.img = pg.Surface((2*hf,2*hf))
-        self.img.set_colorkey((0,0,0))
-        pg.draw.circle(self.img, (cl), (hf,hf), hf)   # 
-        self.rect = self.img.get_rect()                    #
+        self.image = pg.Surface((2*r,2*r))
+        self.image.set_colorkey((0,0,0))
+        pg.draw.circle(self.image, (cl), (r,r), r)   
+        self.rect = self.image.get_rect()                    
         self.rect.centerx = random.randint(0, screen.rect.width)
         self.rect.centery = random.randint(0, screen.rect.height)
                            # 爆弾用のSurfaceを画面用Surfaceに貼り付ける
@@ -69,39 +84,53 @@ def main():
     
     # 練習1
     screen = Screen("c:/Users/admin/Documents/二年生　前期/プロジェクト/ProjExD2022/ProjExD_pub/fig/pg_bg.jpg",(1600,900),"にげろ！こうかとん")
-    screen.disp.blit(screen.img,(0,0),screen.rect )
+    screen.disp.blit(screen.image,(0,0),screen.rect )
 
     
     # 練習3
-    tori = Bird("c:/Users/admin/Documents/二年生　前期/プロジェクト/ProjExD2022/ProjExD_pub/fig/5.png",2 ,(900,400))
-    screen.disp.blit(tori.img, tori.rect)
+    tori = pg.sprite.Group()
+    tori.add(Bird("c:/Users/admin/Documents/二年生　前期/プロジェクト/ProjExD2022/ProjExD_pub/fig/5.png",1 ,(900,400)))
+   
        
 
     # 練習5
     bomb = Bomb((255,0,0),10,(+2,+2), screen)                     # 爆弾用のSurface
-    screen.disp.blit(bomb.img, bomb.rect)                   # 爆弾用のSurfaceを画面用Surfaceに貼り付ける
+    screen.disp.blit(bomb.image, bomb.rect)                   # 爆弾用のSurfaceを画面用Surfaceに貼り付ける
+    bombs =pg.sprite.Group()
+    for _ in range(5):
+        bombs.add(Bomb((255,0,0),10*(_+1),(+2,+2), screen))
+
+    score = Score(None, 70,0, "BLACK")
+    screen.disp.blit(score.text,(70,70))
 
     while True:
         # 練習2
-        screen.disp.blit(screen.img,(0,0),screen.rect )
+        screen.disp.blit(screen.image,(0,0),screen.rect )
         for event in pg.event.get():
-            if event.type == pg.QUIT: return       # ✕ボタンでmain関数から戻る
+            if event.type == pg.QUIT: return       
 
         # 練習4
         tori.update(screen)
-        screen.disp.blit(tori.img, tori.rect)
+        tori.draw(screen.disp)
 
         # 練習6
-        bomb.update(screen)
-        screen.disp.blit(bomb.img, bomb.rect)
-        # 練習7
-       
+        bombs.update(screen)      
+        bombs.draw(screen.disp)
 
-        # 練習8
-        if tori.rect.colliderect(bomb.rect): return        # こうかとん用のRectが爆弾用のRectと衝突していたらreturn
+        score.update()
+        screen.disp.blit(score.text,(70,70))
 
-        pg.display.update()  # 画面の更新
-        clock.tick(1000) 
+
+        # 練習8      
+        if len(pg.sprite.groupcollide(tori,bombs, False, False)) != 0:
+            return
+         # こうかとん用のRectが爆弾用のRectと衝突していたらreturn
+         # collide_rect(sprite)
+        
+        pg.display.update()
+          # 画面の更新
+        clock.tick(1000)
+
     
 # 練習7
 def check_bound(sc_r, obj_r): # 画面用Rect, ｛こうかとん，爆弾｝Rect
