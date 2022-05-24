@@ -22,6 +22,7 @@ class Bird:
 
 
     def __init__(self, fn, r, xy ):
+        super().__init__()
         self.img =pg.image.load(fn)
         self.img = pg.transform.rotozoom(self.img, 0, r)
         self.rect= self.img.get_rect()
@@ -46,6 +47,7 @@ class Bomb:
         # hf：爆弾円の半径
         # sp：爆弾円の速度のタプル
         # screen：爆弾円のSureface
+        super().__init__()
         self.img = pg.Surface((2*hf,2*hf))
         self.img.set_colorkey((0,0,0))
         pg.draw.circle(self.img, (cl), (hf,hf), hf)   # 
