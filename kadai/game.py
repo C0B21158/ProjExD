@@ -4,7 +4,9 @@ import sys
 import random
 import sys
 
+
 score = 0
+
 
 class Score:
     def __init__(self, ft,size, sc, co):        
@@ -16,8 +18,9 @@ class Score:
 
     def update(self):
         self.score += 1
-        self.txt = "SCORE:" + str(self.score)
+        self.txt = "SCORE:" + str(self.score)          #
         self.text = self.fonto.render(self.txt, True, self.color)
+
 
 class Screen:
     def __init__(self,fn, wh, title):
@@ -34,8 +37,8 @@ class Reticle(pg.sprite.Sprite):
 
     def __init__(self, fn, xy ):
         super().__init__()
-        self.image =pg.image.load(fn)
-        self.image.set_colorkey((255,255,255))
+        self.image =pg.image.load(fn)                     #こうかとんの画像をロードする
+        self.image.set_colorkey((255,255,255))            #白色を透明化する
         self.image = pg.transform.rotozoom(self.image, 0,1.0 )
         self.rect= self.image.get_rect()
         self.rect.center = xy   
@@ -44,43 +47,38 @@ class Reticle(pg.sprite.Sprite):
     def update(self, pos):
         self.rect.center = pos
 
+
 class Bomb(pg.sprite.Sprite):
     def __init__(self,cl,r,screen):
-        #cl:爆弾円の色
-        # hf：爆弾円の半径
-        # sp：爆弾円の速度のタプル
-        # screen：爆弾円のSureface
         super().__init__()
-        self.image = pg.Surface((2*r,2*r))
-        self.image.set_colorkey((0,0,0))
-        pg.draw.circle(self.image, (cl), (r,r), r)   
+        self.image = pg.Surface((2*r,2*r))        #爆弾の大きさ
+        self.image.set_colorkey((0,0,0))          
+        pg.draw.circle(self.image, (cl), (r,r), r)   #円を描く
         self.rect = self.image.get_rect()                    
         self.rect.centerx = random.randint(0, screen.rect.width)
         self.rect.centery = random.randint(0, screen.rect.height)
                            # 爆弾用のSurfaceを画面用Surfaceに貼り付ける
 
 
-
-                
 def main():
     clock = pg.time.Clock()
 
     screen = Screen("c:/Users/admin/Documents/二年生　前期/プロジェクト/ProjExD2022/ProjExD_pub/fig/pg_bg.jpg",(1600,900),"射的ゲーム")
     screen.disp.blit(screen.image,(0,0),screen.rect )
 
-    Reticles = pg.sprite.Group()
+    Reticles = pg.sprite.Group()     #動くこうかとん用Surface
     Reticles.add(Reticle("c:/Users/admin/Documents/二年生　前期/プロジェクト/ProjExD2022/ProjExD_pub/fig/5.png",pg.mouse.get_pos()))
 
     bombs =pg.sprite.Group()
-    bombs.add(Bomb((0,0,255),30, screen))                   # 爆弾用のSurface                 # 爆弾用のSurfaceを画面用Surfaceに貼り付ける
+    bombs.add(Bomb((0,0,255),30, screen))       # 爆弾用のSurface # 爆弾用のSurfaceを画面用Surfaceに貼り付ける
 
-    score = Score(None, 70,0, "BLACK")
+    score = Score(None, 70,0, "BLACK")        #Score用のSurface
     screen.disp.blit(score.text,(70,70))
+
 
     while True:
         screen.disp.blit(screen.image,(0,0),screen.rect )
 
-    
         bombs.draw(screen.disp)
 
         Reticles.update(pg.mouse.get_pos())
@@ -88,11 +86,11 @@ def main():
 
         screen.disp.blit(score.text,(70,70))
         
-        for event in pg.event.get():
+        for event in pg.event.get():        #こうかとんが爆弾と接触しているか判定
             if event.type == pg.MOUSEBUTTONDOWN:
                 if len(pg.sprite.groupcollide(Reticles,bombs, 0, 1)) != 0:
                     score.update()
-                    bombs.add(Bomb((0,0,255), 30, screen))
+                    bombs.add(Bomb((0,0,255), 30, screen))   #新しい爆弾を作る
 
             pg.display.update()
                 # 画面の更新
